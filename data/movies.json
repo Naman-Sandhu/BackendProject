@@ -1,0 +1,54 @@
+[
+  {
+    "id": 1,
+    "title": "The Matrix",
+    "genre": "Sci-Fi",
+    "duration": 136,
+    "showtime": [
+      "10:00 AM",
+      "2:00 PM",
+      "6:00 PM"
+    ],
+    "price": 12,
+    "availableSeats": 43
+  },
+  {
+    "id": 2,
+    "title": "Inception",
+    "genre": "Thriller",
+    "duration": 148,
+    "showtime": [
+      "11:00 AM",
+      "3:00 PM",
+      "7:00 PM"
+    ],
+    "price": 15,
+    "availableSeats": 45
+  },
+  {
+    "id": 3,
+    "title": "The Dark Knight",
+    "genre": "Action",
+    "duration": 152,
+    "showtime": [
+      "12:00 PM",
+      "4:00 PM",
+      "8:00 PM"
+    ],
+    "price": 14,
+    "availableSeats": 60
+  },
+  {
+    "id": 4,
+    "title": "Kya dekhna h",
+    "genre": "Kuch b nhi",
+    "duration": 10000,
+    "showtime": [
+      "12:00 PM",
+      "4:00 PM",
+      "8:00 PM"
+    ],
+    "price": 14,
+    "availableSeats": 60
+  }
+]

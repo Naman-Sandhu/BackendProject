@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movies - Movie Ticket Reservation</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 1200px; margin: 0 auto; padding: 20px; }
+        nav { background: #333; padding: 10px; margin-bottom: 20px; }
+        nav a { color: white; text-decoration: none; margin: 0 15px; }
+        .movie-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+        .movie-card { border: 1px solid #ddd; padding: 20px; border-radius: 8px; }
+        .movie-card h3 { margin-top: 0; color: #333; }
+        .movie-info { margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="/">Home</a>
+        <a href="/movies.html">Movies</a>
+        <a href="/booking.html">Book Tickets</a>
+    </nav>
+    <h1>Available Movies</h1>
+    <div id="movies" class="movie-grid"></div>
+    <script>
+        fetch('/api/movies')
+            .then(res => res.json())
+            .then(movies => {
+                const container = document.getElementById('movies');
+                movies.forEach(movie => {
+                    container.innerHTML += `
+                        <div class="movie-card">
+                            <h3>${movie.title}</h3>
+                            <div class="movie-info"><strong>Genre:</strong> ${movie.genre}</div>
+                            <div class="movie-info"><strong>Duration:</strong> ${movie.duration} min</div>
+                            <div class="movie-info"><strong>Price:</strong> $${movie.price}</div>
+                            <div class="movie-info"><strong>Available Seats:</strong> ${movie.availableSeats}</div>
+                            <div class="movie-info"><strong>Showtimes:</strong> ${movie.showtime.join(', ')}</div>
+                        </div>
+                    `;
+                });
+            });
+    </script>
+</body>
+</html>
