@@ -118,20 +118,20 @@ router.get('/google', (req, res, next) => {
   return passport.authenticate('google', { scope: ['profile', 'email'] })(req, res, next);
 });
 
-const CLIENT_URL = process.env.CLIENT_URL || 'http://localhost:5173';
-
 router.get('/google/callback',
   (req, res, next) => {
+    const clientUrl = process.env.CLIENT_URL || 'http://localhost:5173';
     if (!passport.isGoogleAuthConfigured) {
-      return res.redirect(`${CLIENT_URL}/login?error=google_not_configured`);
+      return res.redirect(`${clientUrl}/login?error=google_not_configured`);
     }
 
     return passport.authenticate('google', {
       session: false,
-      failureRedirect: `${CLIENT_URL}/login?error=google_failed`
+      failureRedirect: `${clientUrl}/login?error=google_failed`
     })(req, res, next);
   },
   async (req, res) => {
+    const clientUrl = process.env.CLIENT_URL || 'http://localhost:5173';
     const freshUser = await require('../models/User').findById(req.user._id).select('-password');
     const token = jwt.sign(
       { userId: freshUser._id, email: freshUser.email },
@@ -144,7 +144,7 @@ router.get('/google/callback',
       email: freshUser.email,
       profilePic: freshUser.profilePic
     }));
-    res.redirect(`${CLIENT_URL}/login?token=${token}&user=${user}`);
+    res.redirect(`${clientUrl}/login?token=${token}&user=${user}`);
   }
 );
 

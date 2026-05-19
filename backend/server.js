@@ -18,22 +18,21 @@ connectDB();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const CLIENT_URL = process.env.CLIENT_URL || 'http://localhost:5173';
-const allowedOrigins = new Set([
-  CLIENT_URL,
-  'http://localhost:5173',
-  'http://127.0.0.1:5173'
-]);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(cors({
   origin(origin, callback) {
+    const clientUrl = process.env.CLIENT_URL || 'http://localhost:5173';
+    const allowedOrigins = new Set([
+      clientUrl,
+      'http://localhost:5173',
+      'http://127.0.0.1:5173'
+    ]);
     if (!origin || allowedOrigins.has(origin)) {
       return callback(null, true);
     }
-
     return callback(new Error(`Not allowed by CORS: ${origin}`));
   },
   credentials: true
