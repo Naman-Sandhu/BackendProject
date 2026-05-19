@@ -21,6 +21,7 @@ function Profile() {
           email: res.data.email,
           profilePic: res.data.profilePic
         }));
+        window.dispatchEvent(new Event('userUpdated'));
       })
       .catch(() => navigate('/login'));
   }, [navigate]);
@@ -38,7 +39,12 @@ function Profile() {
       <div className="page">
         <div className="profile-header">
           {user.profilePic
-            ? <img src={`http://localhost:3000${user.profilePic}`} alt={user.name} className="profile-avatar" />
+            ? <img
+                src={user.profilePic.startsWith('http') ? user.profilePic : `http://localhost:3000${user.profilePic}`}
+                alt={user.name}
+                className="profile-avatar"
+                referrerPolicy="no-referrer"
+              />
             : <div className="profile-avatar profile-avatar-initials">{user.name?.charAt(0).toUpperCase()}</div>
           }
           <h2>{user.name}</h2>

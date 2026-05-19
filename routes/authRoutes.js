@@ -114,17 +114,18 @@ router.get('/google', passport.authenticate('google', { scope: ['profile', 'emai
 
 router.get('/google/callback',
   passport.authenticate('google', { session: false, failureRedirect: 'http://localhost:5173/login?error=google_failed' }),
-  (req, res) => {
+  async (req, res) => {
+    const freshUser = await require('../models/User').findById(req.user._id).select('-password');
     const token = jwt.sign(
-      { userId: req.user._id, email: req.user.email },
+      { userId: freshUser._id, email: freshUser.email },
       process.env.JWT_SECRET,
       { expiresIn: '1d' }
     );
     const user = encodeURIComponent(JSON.stringify({
-      id: req.user._id,
-      name: req.user.name,
-      email: req.user.email,
-      profilePic: req.user.profilePic
+      id: freshUser._id,
+      name: freshUser.name,
+      email: freshUser.email,
+      profilePic: freshUser.profilePic
     }));
     res.redirect(`http://localhost:5173/login?token=${token}&user=${user}`);
   }

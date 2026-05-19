@@ -26,9 +26,7 @@ passport.use(new GoogleStrategy({
 
       if (user) {
         user.googleId = profile.id;
-        if (profile.photos?.[0]?.value) {
-  user.profilePic = profile.photos[0].value;
-}
+        user.profilePic = profile.photos?.[0]?.value || user.profilePic;
         await user.save();
       } else {
         user = await User.create({
@@ -38,6 +36,12 @@ passport.use(new GoogleStrategy({
           profilePic: profile.photos?.[0]?.value || '',
           password: 'GOOGLE_AUTH_USER'
         });
+      }
+    } else {
+      // always refresh Google profile pic on every login
+      if (profile.photos?.[0]?.value) {
+        user.profilePic = profile.photos[0].value;
+        await user.save();
       }
     }
 

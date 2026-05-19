@@ -265,6 +265,8 @@ body {
   border-radius: 50%;
   object-fit: cover;
   border: 2px solid #60a5fa;
+  display: block;
+  flex-shrink: 0;
 }
 
 .nav-avatar-initials {
@@ -574,6 +576,7 @@ body {
   border-radius: 50%;
   object-fit: cover;
   border: 3px solid #2563eb;
+  display: block;
 }
 
 .profile-avatar-initials {

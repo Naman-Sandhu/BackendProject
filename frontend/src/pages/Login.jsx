@@ -14,6 +14,7 @@ function Login() {
     if (token && user) {
       localStorage.setItem('token', token);
       localStorage.setItem('user', decodeURIComponent(user));
+      window.dispatchEvent(new Event('userUpdated'));
       navigate('/movies');
     }
     if (params.get('error')) setMessage('Google login failed. Try again.');
@@ -27,6 +28,7 @@ function Login() {
       const res = await axios.post('http://localhost:3000/api/auth/login', formData);
       localStorage.setItem('token', res.data.token);
       localStorage.setItem('user', JSON.stringify(res.data.user));
+      window.dispatchEvent(new Event('userUpdated'));
       setMessage('Login successful');
       setTimeout(() => navigate('/movies'), 1000);
     } catch (error) {
