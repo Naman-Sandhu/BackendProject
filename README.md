@@ -10,15 +10,6 @@ A Node.js backend project demonstrating client-server architecture, file handlin
 - RESTful API endpoints
 - Static HTML pages
 
-## Installation
-```bash
-npm install
-```
-
-## Run
-```bash
-npm start
-```
 
 ## API Endpoints
 - GET `/api/movies` - Get all movies
@@ -33,14 +24,3 @@ npm start
 - Booking: http://localhost:3000/booking.html
 - API: http://localhost:3000/api
 
-## Syllabus Coverage
-✓ Client-Server Architecture
-✓ File Handling Module
-✓ HTTP Module
-✓ NPM & Modules
-✓ Express Framework
-✓ Static File Serving
-✓ Routing (methods, paths, parameters, handlers)
-✓ Response Methods
-✓ Middleware (Application-level, Router-level, Error-handling)
-✓ Exception Handling
