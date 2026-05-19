@@ -62,6 +62,14 @@ app.get('/health', (req, res) => {
   res.status(200).json({ status: 'ok' });
 });
 
+app.get('/', (req, res) => {
+  res.json({
+    message: 'Movie Ticket Reservation API is running',
+    health: '/health',
+    api: '/api'
+  });
+});
+
 app.get('/api', (req, res) => {
   res.json({
     message: 'Movie Ticket Reservation API',
