@@ -110,12 +110,27 @@ router.get('/me', protect, async (req, res, next) => {
   }
 });
 
-router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+router.get('/google', (req, res, next) => {
+  if (!passport.isGoogleAuthConfigured) {
+    return res.status(503).json({ message: 'Google login is not configured' });
+  }
+
+  return passport.authenticate('google', { scope: ['profile', 'email'] })(req, res, next);
+});
 
 const CLIENT_URL = process.env.CLIENT_URL || 'http://localhost:5173';
 
 router.get('/google/callback',
-  passport.authenticate('google', { session: false, failureRedirect: `${CLIENT_URL}/login?error=google_failed` }),
+  (req, res, next) => {
+    if (!passport.isGoogleAuthConfigured) {
+      return res.redirect(`${CLIENT_URL}/login?error=google_not_configured`);
+    }
+
+    return passport.authenticate('google', {
+      session: false,
+      failureRedirect: `${CLIENT_URL}/login?error=google_failed`
+    })(req, res, next);
+  },
   async (req, res) => {
     const freshUser = await require('../models/User').findById(req.user._id).select('-password');
     const token = jwt.sign(

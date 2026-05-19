@@ -23,9 +23,6 @@ Backend environment variables:
 ```text
 MONGO_URI=<your MongoDB Atlas connection string>
 CLIENT_URL=https://movie-tickets-web.onrender.com
-GOOGLE_CLIENT_ID=<optional Google OAuth client id>
-GOOGLE_CLIENT_SECRET=<optional Google OAuth client secret>
-GOOGLE_CALLBACK_URL=https://movie-tickets-api.onrender.com/api/auth/google/callback
 ```
 
 Frontend environment variables:
@@ -35,6 +32,14 @@ VITE_API_BASE_URL=https://movie-tickets-api.onrender.com
 ```
 
 `JWT_SECRET` is generated automatically by the blueprint.
+
+Google OAuth is optional. If you need it, add these backend environment variables after the first deploy and redeploy:
+
+```text
+GOOGLE_CLIENT_ID=<Google OAuth client id>
+GOOGLE_CLIENT_SECRET=<Google OAuth client secret>
+GOOGLE_CALLBACK_URL=https://movie-tickets-api.onrender.com/api/auth/google/callback
+```
 
 ## Option B: Manual Services
 
@@ -55,8 +60,13 @@ Add backend environment variables:
 MONGO_URI=<your MongoDB Atlas connection string>
 JWT_SECRET=<any long random secret>
 CLIENT_URL=<your frontend Render URL after frontend is created>
-GOOGLE_CLIENT_ID=<optional>
-GOOGLE_CLIENT_SECRET=<optional>
+```
+
+Optional Google login variables:
+
+```text
+GOOGLE_CLIENT_ID=<Google OAuth client id>
+GOOGLE_CLIENT_SECRET=<Google OAuth client secret>
 GOOGLE_CALLBACK_URL=https://<your-backend-service>.onrender.com/api/auth/google/callback
 ```
 
