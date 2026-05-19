@@ -1,26 +1,26 @@
 import { useState, useEffect } from 'react';
 import { api, API_BASE_URL } from '../api';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 function Login() {
   const [formData, setFormData] = useState({ email: '', password: '' });
-  const [message, setMessage] = useState(() => {
-    const params = new URLSearchParams(window.location.search);
-    return params.get('error') ? 'Google login failed. Try again.' : '';
-  });
+  const [message, setMessage] = useState('');
+  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const token = params.get('token');
-    const user = params.get('user');
+    const token = searchParams.get('token');
+    const user = searchParams.get('user');
     if (token && user) {
       localStorage.setItem('token', token);
       localStorage.setItem('user', decodeURIComponent(user));
       window.dispatchEvent(new Event('userUpdated'));
       navigate('/movies');
     }
-  }, [navigate]);
+    if (searchParams.get('error')) {
+      setMessage('Google login failed. Try again.');
+    }
+  }, [searchParams, navigate]);
 
   const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
