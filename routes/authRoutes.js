@@ -112,8 +112,10 @@ router.get('/me', protect, async (req, res, next) => {
 
 router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 
+const CLIENT_URL = process.env.CLIENT_URL || 'http://localhost:5173';
+
 router.get('/google/callback',
-  passport.authenticate('google', { session: false, failureRedirect: 'http://localhost:5173/login?error=google_failed' }),
+  passport.authenticate('google', { session: false, failureRedirect: `${CLIENT_URL}/login?error=google_failed` }),
   async (req, res) => {
     const freshUser = await require('../models/User').findById(req.user._id).select('-password');
     const token = jwt.sign(
@@ -127,7 +129,7 @@ router.get('/google/callback',
       email: freshUser.email,
       profilePic: freshUser.profilePic
     }));
-    res.redirect(`http://localhost:5173/login?token=${token}&user=${user}`);
+    res.redirect(`${CLIENT_URL}/login?token=${token}&user=${user}`);
   }
 );
 

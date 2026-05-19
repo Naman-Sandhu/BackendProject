@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { api } from '../api';
 
 function Booking() {
   const { state } = useLocation();
@@ -34,7 +34,7 @@ function Booking() {
     setLoading(true);
     try {
       const token = localStorage.getItem('token');
-      await axios.post('http://localhost:3000/api/bookings', form, {
+      await api.post('/api/bookings', form, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setMessage('🎉 Booking confirmed! Redirecting to your bookings...');

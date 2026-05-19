@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { api } from '../api';
 
 function Movies() {
   const [movies, setMovies] = useState([]);
@@ -8,7 +8,7 @@ function Movies() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get('http://localhost:3000/api/movies')
+    api.get('/api/movies')
       .then(res => setMovies(res.data))
       .catch(() => {})
       .finally(() => setLoading(false));

@@ -1,5 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import { API_BASE_URL, getMediaUrl } from '../api';
 
 function Navbar() {
   const navigate = useNavigate();
@@ -8,7 +9,7 @@ function Navbar() {
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
-      fetch('http://localhost:3000/api/auth/me', {
+      fetch(`${API_BASE_URL}/api/auth/me`, {
         headers: { Authorization: `Bearer ${token}` }
       })
         .then(r => r.json())
@@ -61,7 +62,7 @@ function Navbar() {
             <Link to="/profile" className="nav-avatar-link">
               {user.profilePic
                 ? <img
-                    src={user.profilePic.startsWith('http') ? user.profilePic : `http://localhost:3000${user.profilePic}`}
+                    src={getMediaUrl(user.profilePic)}
                     alt={user.name}
                     className="nav-avatar"
                     referrerPolicy="no-referrer"

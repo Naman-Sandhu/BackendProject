@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import { api, API_BASE_URL } from '../api';
 import { useNavigate } from 'react-router-dom';
 
 function Login() {
@@ -25,7 +25,7 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post('http://localhost:3000/api/auth/login', formData);
+      const res = await api.post('/api/auth/login', formData);
       localStorage.setItem('token', res.data.token);
       localStorage.setItem('user', JSON.stringify(res.data.user));
       window.dispatchEvent(new Event('userUpdated'));
@@ -65,7 +65,7 @@ function Login() {
         <div style={{ textAlign: 'center', margin: '12px 0' }}>or</div>
 
         <button
-          onClick={() => window.location.href = 'http://localhost:3000/api/auth/google'}
+          onClick={() => window.location.href = `${API_BASE_URL}/api/auth/google`}
           style={{ width: '100%', padding: '10px', cursor: 'pointer' }}
         >
           Login with Google

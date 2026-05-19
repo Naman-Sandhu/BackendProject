@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { api, getMediaUrl } from '../api';
 
 function Profile() {
   const [user, setUser] = useState(null);
@@ -10,7 +10,7 @@ function Profile() {
     const token = localStorage.getItem('token');
     if (!token) return navigate('/login');
 
-    axios.get('http://localhost:3000/api/auth/me', {
+    api.get('/api/auth/me', {
       headers: { Authorization: `Bearer ${token}` }
     })
       .then(res => {
@@ -40,7 +40,7 @@ function Profile() {
         <div className="profile-header">
           {user.profilePic
             ? <img
-                src={user.profilePic.startsWith('http') ? user.profilePic : `http://localhost:3000${user.profilePic}`}
+                src={getMediaUrl(user.profilePic)}
                 alt={user.name}
                 className="profile-avatar"
                 referrerPolicy="no-referrer"

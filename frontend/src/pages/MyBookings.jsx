@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { api } from '../api';
 
 function MyBookings() {
   const [bookings, setBookings] = useState([]);
@@ -11,7 +11,7 @@ function MyBookings() {
     const token = localStorage.getItem('token');
     if (!token) return navigate('/login');
 
-    axios.get('http://localhost:3000/api/bookings', {
+    api.get('/api/bookings', {
       headers: { Authorization: `Bearer ${token}` }
     })
       .then(res => setBookings(res.data))

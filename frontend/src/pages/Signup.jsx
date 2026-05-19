@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import axios from 'axios';
+import { api } from '../api';
 
 function Signup() {
   const [formData, setFormData] = useState({
@@ -28,7 +28,7 @@ function Signup() {
       data.append('password', formData.password);
       if (profilePic) data.append('profilePic', profilePic);
 
-      const res = await axios.post('http://localhost:3000/api/auth/signup', data, {
+      const res = await api.post('/api/auth/signup', data, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
 
