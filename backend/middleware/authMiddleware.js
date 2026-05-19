@@ -15,7 +15,7 @@ const protect = (req, res, next) => {
       return res.status(401).json({ message: 'Not authorized, token missing' });
     }
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET ? process.env.JWT_SECRET.trim() : 'backup_secret');
 
     req.user = {
       userId: decoded.userId,

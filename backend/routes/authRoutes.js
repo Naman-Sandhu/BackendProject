@@ -77,7 +77,7 @@ router.post('/login', async (req, res, next) => {
         userId: user._id,
         email: user.email
       },
-      process.env.JWT_SECRET,
+      process.env.JWT_SECRET ? process.env.JWT_SECRET.trim() : 'backup_secret',
       { expiresIn: '1d' }
     );
 
@@ -135,7 +135,7 @@ router.get('/google/callback',
     const freshUser = await require('../models/User').findById(req.user._id).select('-password');
     const token = jwt.sign(
       { userId: freshUser._id, email: freshUser.email },
-      process.env.JWT_SECRET,
+      process.env.JWT_SECRET ? process.env.JWT_SECRET.trim() : 'backup_secret',
       { expiresIn: '1d' }
     );
     const user = encodeURIComponent(JSON.stringify({
