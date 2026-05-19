@@ -59,7 +59,7 @@
                 movies = data;
                 const select = document.getElementById('movieId');
                 movies.forEach(movie => {
-                    select.innerHTML += `<option value="${movie.id}">${movie.title} - $${movie.price}</option>`;
+                  select.innerHTML += `<option value="${movie._id}">${movie.title} - $${movie.price}</option>`;
                 });
                 updateShowtimes();
             });

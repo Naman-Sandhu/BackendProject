@@ -1,69 +1,75 @@
 const express = require('express');
 const router = express.Router();
-const { readFile, writeFile, appendFile } = require('../modules/fileHandler');
+const Booking = require('../models/Booking');
+const Movie = require('../models/Movie');
 const { validateBooking } = require('../middleware/validator');
+const protect = require('../middleware/authMiddleware');
 
-router.get('/', (req, res, next) => {
+router.get('/', protect, async (req, res, next) => {
   try {
-    const bookings = readFile('data/bookings.json');
+    const bookings = await Booking.find({ userId: req.user.userId });
     res.json(bookings);
   } catch (error) {
     next(error);
   }
 });
 
-router.post('/', validateBooking, (req, res, next) => {
+router.post('/', protect, validateBooking, async (req, res, next) => {
   try {
     const { movieId, showtime, seats, customerName, email } = req.body;
-    const movies = readFile('data/movies.json');
-    const movie = movies.find(m => m.id === parseInt(movieId));
-    
+
+    const movie = await Movie.findById(movieId);
+
     if (!movie) {
       const error = new Error('Movie not found');
       error.status = 404;
       return next(error);
     }
-    
-    if (movie.availableSeats < seats) {
+
+    if (movie.availableSeats < Number(seats)) {
       const error = new Error('Not enough seats available');
       error.status = 400;
       return next(error);
     }
-    
-    const booking = {
-      id: Date.now(),
-      movieId: parseInt(movieId),
+
+    const booking = new Booking({
+      userId: req.user.userId,
+      movieId: movie._id,
       movieTitle: movie.title,
       showtime,
-      seats,
+      seats: Number(seats),
       customerName,
       email,
-      totalPrice: movie.price * seats,
-      bookingDate: new Date().toISOString()
-    };
-    
-    appendFile('data/bookings.json', booking);
-    
-    movie.availableSeats -= seats;
-    writeFile('data/movies.json', movies);
-    
-    res.status(201).json({ message: 'Booking successful', booking });
+      totalPrice: movie.price * Number(seats)
+    });
+
+    await booking.save();
+
+    movie.availableSeats = movie.availableSeats - Number(seats);
+    await movie.save();
+
+    res.status(201).json({
+      message: 'Booking successful',
+      booking
+    });
   } catch (error) {
     next(error);
   }
 });
 
-router.get('/:id', (req, res, next) => {
+router.get('/:id', protect, async (req, res, next) => {
   try {
-    const bookings = readFile('data/bookings.json');
-    const booking = bookings.find(b => b.id === parseInt(req.params.id));
-    
+    const booking = await Booking.findOne({
+      _id: req.params.id,
+      userId: req.user.userId
+    });
+
     if (!booking) {
       const error = new Error('Booking not found');
       error.status = 404;
       return next(error);
     }
-    
+
     res.json(booking);
   } catch (error) {
     next(error);

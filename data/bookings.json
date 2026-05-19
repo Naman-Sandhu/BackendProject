@@ -42,5 +42,27 @@
     "email": "namansandhu263@gmail.com",
     "totalPrice": 12,
     "bookingDate": "2026-03-10T12:34:34.276Z"
+  },
+  {
+    "id": 1773232555738,
+    "movieId": 1,
+    "movieTitle": "The Matrix",
+    "showtime": "10:00 AM",
+    "seats": 4,
+    "customerName": "Naman",
+    "email": "namansandhu263@gmail.com",
+    "totalPrice": 48,
+    "bookingDate": "2026-03-11T12:35:55.738Z"
+  },
+  {
+    "id": 1774876511512,
+    "movieId": 1,
+    "movieTitle": "The Matrix",
+    "showtime": "10:00 AM",
+    "seats": 1,
+    "customerName": "Naman",
+    "email": "namansandhu263@gmail.com",
+    "totalPrice": 12,
+    "bookingDate": "2026-03-30T13:15:11.512Z"
   }
 ]

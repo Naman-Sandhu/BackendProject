@@ -1,29 +1,58 @@
 const express = require('express');
+const cors = require('cors');
 const path = require('path');
+const dotenv = require('dotenv');
+
+dotenv.config();
+
+const session = require('express-session');
+const passport = require('./config/passport');
+const authRoutes = require('./routes/authRoutes');
+
+const connectDB = require('./config/db');
 const logger = require('./middleware/logger');
 const errorHandler = require('./middleware/errorHandler');
 const movieRoutes = require('./routes/movieRoutes');
 const bookingRoutes = require('./routes/bookingRoutes');
 
+connectDB();
+
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.use(cors({
+  origin: 'http://localhost:5173',
+  credentials: true
+}));
+
+app.use(session({
+  secret: process.env.JWT_SECRET,
+  resave: false,
+  saveUninitialized: false
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use(logger);
 
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.use('/api/movies', movieRoutes);
 app.use('/api/bookings', bookingRoutes);
+app.use('/api/auth', authRoutes);
 
 app.get('/api', (req, res) => {
   res.json({
     message: 'Movie Ticket Reservation API',
     endpoints: {
       movies: '/api/movies',
-      bookings: '/api/bookings'
+      bookings: '/api/bookings',
+      auth: '/api/auth'
     }
   });
 });
