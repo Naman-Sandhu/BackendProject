@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const RENDER_API_BASE_URL = 'https://backendproject-1-xfgv.onrender.com';
+const RENDER_API_BASE_URL = 'https://movie-reservation-system-a66n.onrender.com';
 const LOCALHOST_RE = /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?\/?$/i;
 
 const resolveApiBaseUrl = () => {
