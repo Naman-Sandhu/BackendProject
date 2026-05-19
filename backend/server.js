@@ -5,7 +5,6 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 
-const session = require('express-session');
 const passport = require('./config/passport');
 const authRoutes = require('./routes/authRoutes');
 
@@ -40,14 +39,7 @@ app.use(cors({
   credentials: true
 }));
 
-app.use(session({
-  secret: process.env.JWT_SECRET,
-  resave: false,
-  saveUninitialized: false
-}));
-
 app.use(passport.initialize());
-app.use(passport.session());
 
 app.use(logger);
 
