@@ -4,7 +4,10 @@ import { useNavigate } from 'react-router-dom';
 
 function Login() {
   const [formData, setFormData] = useState({ email: '', password: '' });
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState(() => {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('error') ? 'Google login failed. Try again.' : '';
+  });
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -17,7 +20,6 @@ function Login() {
       window.dispatchEvent(new Event('userUpdated'));
       navigate('/movies');
     }
-    if (params.get('error')) setMessage('Google login failed. Try again.');
   }, [navigate]);
 
   const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });

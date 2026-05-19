@@ -2,17 +2,28 @@ import { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { api } from '../api';
 
+const getStoredUser = () => {
+  try {
+    return JSON.parse(localStorage.getItem('user') || '{}');
+  } catch {
+    return {};
+  }
+};
+
 function Booking() {
   const { state } = useLocation();
   const navigate = useNavigate();
   const movie = state?.movie || null;
 
-  const [form, setForm] = useState({
-    movieId: movie?._id || '',
-    showtime: movie?.showtime?.[0] || '',
-    seats: 1,
-    customerName: '',
-    email: ''
+  const [form, setForm] = useState(() => {
+    const user = getStoredUser();
+    return {
+      movieId: movie?._id || '',
+      showtime: movie?.showtime?.[0] || '',
+      seats: 1,
+      customerName: user.name || '',
+      email: user.email || ''
+    };
   });
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
@@ -21,8 +32,6 @@ function Booking() {
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (!token) return navigate('/login');
-    const user = JSON.parse(localStorage.getItem('user') || '{}');
-    setForm(f => ({ ...f, customerName: user.name || '', email: user.email || '' }));
   }, [navigate]);
 
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
